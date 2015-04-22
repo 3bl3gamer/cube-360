@@ -1,0 +1,24 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="glMatrix_extracted.js"></script>
+<script src="control.js"></script>
+<script src="pano.js"></script>
+<script src="webgl_pano.js"></script>
+<script src="canvas_pano.js"></script>
+<body style="margin:0;">
+<canvas id="canvas" style="width:100%; height:100%;"></canvas>
+<script>
+	window.onerror = function(e) {
+		alert(e)
+	}
+	var pano = new Pano(canvas);
+	pano.resize();
+	pano.setImagesSrc({
+		north: "cube_0.jpg",
+		south: "cube_3.jpg",
+		west: "cube_1.jpg",
+		east: "cube_2.jpg",
+		top: "cube_4.jpg",
+		bottom: "cube_5.jpg"
+	});
+</script>
+</body>
