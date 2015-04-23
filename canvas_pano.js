@@ -10,10 +10,12 @@ CanvasPano.prototype.handleLoadedImage = function(img) {
 }
 
 CanvasPano.prototype.drawStart = function(pMatrix) {
-	this._rc.clearRect(0,0,canvas.width,canvas.height); //TODO:canvas
+	var canvas = this._rc.canvas;
+	this._rc.clearRect(0,0,canvas.width,canvas.height);
 }
 
 CanvasPano.prototype.drawSide = function(pMatrix, mvMatrix, texture) {
+	var canvas = this._rc.canvas;
 	mat4.identity(this._curMatrix);
 	mat4.translate(this._curMatrix, [canvas.width/2, canvas.height/2, 0]);
 	mat4.scale(this._curMatrix, [canvas.width/2,canvas.height/2,1]);
