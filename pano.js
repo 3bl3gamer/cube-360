@@ -72,6 +72,7 @@ function Pano(canvas) {
 	function redraw() {
 		drawScene();
 		requested = false;
+		smoothIfNecessary();
 	}
 	function reqestRedraw() {
 		if (requested) return;
@@ -87,9 +88,9 @@ function Pano(canvas) {
 		engine.resize(canvas);
 	}
 	
-	function move(x1,y1,x2,y2) {
-		yRot += -(x2-x1)/10000*fov;
-		xRot += -(y2-y1)/10000*fov;
+	function move(dx, dy) {
+		yRot += -dx/10000*fov;
+		xRot += -dy/10000*fov;
 		reqestRedraw();
 	}
 	
@@ -100,6 +101,21 @@ function Pano(canvas) {
 	
 	function distBetween(x1,y1,x2,y2) {
 		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+	}
+	
+	
+	// MOVEMENT SMOOTHING
+	// "proxy" between CONTROLS and TRANSFORMING
+	var smooth_dz=1;
+	function smoothIfNecessary() {
+		if (smooth_dz>0.99 && smooth_dz<1.01) return;
+		var nz = 1+(smooth_dz-1)*0.5;
+		zoom(smooth_dz/nz);
+		smooth_dz = nz;
+	}
+	function smoothZoom(d) {
+		smooth_dz *= d;
+		smoothIfNecessary();
 	}
 	
 	
@@ -114,7 +130,7 @@ function Pano(canvas) {
 	}
 	p.singleMove = function(x, y) {
 		if (!grabbed) return false;
-		move(grab_x, grab_y, x, y);
+		move(x-grab_x, y-grab_y);
 		grab_x = x; grab_y = y;
 		return true;
 	}
@@ -124,7 +140,7 @@ function Pano(canvas) {
 		return was_down;
 	}
 	p.wheelRot = function(dx, dy) {
-		zoom(Math.pow(2, dx/10));
+		smoothZoom(Math.pow(2, dx/10));
 		return true;
 	}
 	
@@ -139,7 +155,7 @@ function Pano(canvas) {
 		if (!grabbed) return false;
 		var cx=(x1+x2)/2, cy=(y1+y2)/2;
 		var len = distBetween(x1, y1, x2, y2);
-		move(grab_x, grab_y, cx, cy);
+		move(cx-grab_x, cy-grab_y);
 		zoom(len/grab_len);
 		grab_x = cx; grab_y = cy;
 		grab_len = len;
