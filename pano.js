@@ -3,7 +3,12 @@ if (!window.requestAnimationFrame) {
 	window.requestAnimationFrame = function(func){ setTimeout(func, 16) }
 }
 
-function Pano(canvas) {
+function Pano(canvas, cfg) {
+	// CONFIG
+	cfg = cfg || {};
+	cfg.fovMax = cfg.fovMax || Infinity;
+	cfg.fovMin = cfg.fovMin || -Infinity;
+	
 	// INIT
 	var engine = null;
 	try {
@@ -95,7 +100,7 @@ function Pano(canvas) {
 	}
 	
 	function zoom(d) {
-		fov /= d;
+		fov = Math.max(cfg.fovMin, Math.min(fov/d, cfg.fovMax));
 		reqestRedraw();
 	}
 	

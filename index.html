@@ -10,7 +10,7 @@
 	window.onerror = function(e) {
 		alert(e)
 	}
-	var pano = new Pano(canvas);
+	var pano = new Pano(canvas, {fovMin:10, fovMax:90});
 	pano.resize();
 	pano.setImagesSrc({
 		north: "img/cube_0.jpg",
