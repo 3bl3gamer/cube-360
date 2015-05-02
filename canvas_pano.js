@@ -89,6 +89,7 @@ CanvasPano.prototype._drawPart = function(img, ix,iy,iw,ih, x0,y0,x1,y1,x2,y2,x3
 	rc.moveTo(0-d*2, 0-d  );
 	rc.lineTo(1+d,   0-d  );
 	rc.lineTo(1+d,   1+d*2);
+	rc.closePath(); //ФФ без этого ИНОГДА не clip'ает
 	rc.clip();
 	rc.drawImage(
 		img,
@@ -108,6 +109,7 @@ CanvasPano.prototype._drawPart = function(img, ix,iy,iw,ih, x0,y0,x1,y1,x2,y2,x3
 	rc.moveTo(1+d*2, 1+d  );
 	rc.lineTo(0-d,   1+d  );
 	rc.lineTo(0-d,   0-d*2);
+	rc.closePath(); //ФФ без этого ИНОГДА не clip'ает
 	rc.clip();
 	rc.drawImage(
 		img,
