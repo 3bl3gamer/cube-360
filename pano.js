@@ -139,8 +139,8 @@ function Pano(canvas) {
 		grabbed = false;
 		return was_down;
 	}
-	p.wheelRot = function(dx, dy) {
-		smoothZoom(Math.pow(2, dx/10));
+	p.wheelRot = function(dx, dy, dz) {
+		smoothZoom(Math.pow(2, -dy/250));
 		return true;
 	}
 	

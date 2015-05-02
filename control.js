@@ -107,11 +107,14 @@ control.add = function(opts) {
 	stopElem.addEventListener('touchend', touchEnd, true);
 	
 	if (wheelRot) {
-		startElem.addEventListener('mousewheel',     function(e) {
-			wheelRot(e.wheelDelta/120, e.wheelDeltaX/120, e.wheelDeltaY/120) && e.preventDefault();
-		}, true);
-		startElem.addEventListener('DOMMouseScroll', function(e) {
-			wheelRot(-e.detail, e.axis==1 ? -e.detail : 0, e.axis==2 ? -e.detail : 0) && e.preventDefault();
-		}, true);
+		var deltaMode2pixels = [];
+		deltaMode2pixels[WheelEvent.DOM_DELTA_PIXEL] = 1;
+		deltaMode2pixels[WheelEvent.DOM_DELTA_LINE] = 20;
+		deltaMode2pixels[WheelEvent.DOM_DELTA_PAGE] = 50; // а это вообще как?
+		
+		startElem.addEventListener('wheel', function(e) {
+			var k = deltaMode2pixels[e.deltaMode];
+			wheelRot(e.deltaX*k, e.deltaY*k, e.deltaZ*k) && e.preventDefault();
+		}, true)
 	}
 }
